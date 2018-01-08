@@ -9,7 +9,7 @@ import matplotlib.pyplot
 sys.path.append("../tools/")
 
 from feature_format import featureFormat, targetFeatureSplit
-from tester import dump_classifier_and_data
+from tester_v2 import dump_classifier_and_data
 
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
@@ -212,7 +212,7 @@ for a in algorithms:
                             classifier_step])
 
     params = {
-            'SKB__k' : [8,9,10,11,12],
+            'SKB__k' : [6,7,8,9,10,11,12],
             'SKB__score_func' : [f_classif]
             }
 
