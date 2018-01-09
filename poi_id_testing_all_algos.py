@@ -20,13 +20,15 @@ from sklearn.grid_search import GridSearchCV
 from sklearn.feature_selection import SelectKBest, chi2, f_classif
 
 from feature_format import featureFormat, targetFeatureSplit
-from tester import dump_classifier_and_data
-from tester import test_classifier
+from tester_v2 import dump_classifier_and_data
+from tester_v2 import test_classifier
 from sklearn.cross_validation import train_test_split, StratifiedShuffleSplit
 
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
 ### The first feature must be "poi".
+
+target_list = 'poi'
 features_list = ['poi',
                  'salary',
                  'pct_poi_inbound',
@@ -69,7 +71,6 @@ data_dict.pop('TOTAL', 0)
 
 # Do any records have no financial data? If so, no action is required
 # featureFormat takes care of that (below)
-
 ### Task 3: Create new feature(s)
 ### Store to my_dataset for easy export below.
 my_dataset = data_dict
@@ -124,8 +125,17 @@ features_list = ['poi'] + financial_features + email_features
 ### Extract features and labels from dataset for local testing
 data = featureFormat(my_dataset, features_list, sort_keys = True)
 labels, features = targetFeatureSplit(data)
-# print "length of data numpy array:", len(data)
-# print "Features List:", features_list
+print "length of data numpy array:", len(data)
+print "Features List:", features_list
+
+# How many POIs are there
+import numpy as np
+poi_ind = features_list.index("poi")
+
+### Print out the number of poi and non-poi
+print "The total number of poi:", np.sum(data[:,poi_ind])
+print "The total number of non-poi:", np.size(data[:,poi_ind]) - np.sum(data[:,poi_ind])
+
 # print "Labels:", labels
 # print "Features:", features
 
@@ -239,7 +249,7 @@ for a in algorithms:
 
     params = {
                 #'PCA__n_components': [2],
-                'SKB__k' : [8,9,10,11, 12],
+                'SKB__k' : [6,7,8,9,10,11,12],
                 'SKB__score_func' : [f_classif]
              }
     params.update(clf_step_params)
